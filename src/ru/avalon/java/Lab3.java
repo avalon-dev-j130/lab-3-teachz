@@ -3,17 +3,11 @@ package ru.avalon.java;
 import ru.avalon.java.console.ConsoleUI;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import ru.avalon.java.actions.*;
 
-/**
- * Лабораторная работа №3
- * <p>
- * Курс: "Программирование на платформе Java. Разработка
- * многоуровневых приложений"
- * <p>
- * Тема: "Потоки исполнения (Threads) и многозадачность" 
- *
- * @author Daniel Alpatov <danial.alpatov@gmail.com>
- */
+
 public class Lab3 extends ConsoleUI<Commands> {
     /**
      * Точка входа в приложение.
@@ -21,40 +15,38 @@ public class Lab3 extends ConsoleUI<Commands> {
      * @param args 
      */
     public static void main(String[] args) {
+        System.out.println("Запуск main");
+//        try {
+//            new Commands("copy file1 file2 ");
+//        } catch (IllegalCommand ex) {
+//            System.out.println("Исключение IllegalCommand возвращено");
+//        }
+//        
+//        new FileCopyAction("README.md","README3.md").start();
+//        new FileMoveAction("README2.md","README5.md").start();
+        System.out.println("Запуск Lab3:");
         new Lab3().run();
     }
-    /**
-     * Конструктор класса.
-     * <p>
-     * Инициализирует экземпляр базового типа с использоавнием
-     * перечисления {@link Commands}.
-     */
+    
     Lab3() {
-        super(Commands.class);
+       // super(Commands.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void onCommand(Commands command) throws IOException {
-        switch (command) {
+    protected void onCommand(Commands command) {
+        switch (command.comm) {
             case copy:
-                /*
-                 * TODO №6 Обработайте команду copy
-                 */
+                new FileCopyAction(command.param[0],command.param[1]).start();
+                System.out.println("Метод onCommand отработал для copy");
                 break;
             case move:
-                /*
-                 * TODO №7 Обработайте команду move
-                 */
+                new FileMoveAction(command.param[0],command.param[1]).start();
                 break;
             case exit:
                 close();
                 break;
-                /*
-                 * TODO №9 Обработайте необработанные команды
-                 */
+             default:
+                System.out.println("нераспознанная команда");
         }
     }
     
